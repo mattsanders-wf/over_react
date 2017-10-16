@@ -15,6 +15,7 @@ part 'flux_component_test/default.dart';
 part 'flux_component_test/handler_precedence.dart';
 part 'flux_component_test/redraw_on.dart';
 part 'flux_component_test/store_handlers.dart';
+part 'flux_component_test/unmount_disposal.dart';
 
 void main() {
   Future nextTick() async {
@@ -163,6 +164,21 @@ void main() {
       component.redraw();
       await nextTick();
       expect(component.numberOfRedraws, equals(0));
+    });
+
+    test('unmount disposes properly', () async {
+      var renderedInstance = render(UnmountDisposal());
+      UnmountDisposalComponent component = getDartComponent(renderedInstance);
+      expect(component.numberOfEvents, 0);
+
+      component.sendEvent();
+      expect(component.numberOfEvents, 1);
+
+      component.componentWillMount();
+      await nextTick();
+
+      component.sendEvent();
+      expect(component.numberOfEvents, 1);
     });
   });
 }
