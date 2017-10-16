@@ -177,6 +177,7 @@ void main() {
       unmount(renderedInstance);
       await nextTick();
 
+      // Should throw an error due to the controller being disposed.
       expect(() => component.sendEvent(), throwsStateError);
     });
   });
