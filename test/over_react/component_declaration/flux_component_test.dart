@@ -174,11 +174,10 @@ void main() {
       component.sendEvent();
       expect(component.numberOfEvents, 1);
 
-      component.componentWillMount();
+      unmount(renderedInstance);
       await nextTick();
 
-      component.sendEvent();
-      expect(component.numberOfEvents, 1);
+      expect(() => component.sendEvent(), throwsStateError);
     });
   });
 }
